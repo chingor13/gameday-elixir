@@ -36,4 +36,25 @@ defmodule GameTest do
   test "can build url" do
     assert Game.game_url("2015", "06", "09", "gid_2015_06_09_seamlb_clemlb_1") == "http://gd2.mlb.com/components/game/mlb/year_2015/month_06/day_09/gid_2015_06_09_seamlb_clemlb_1/inning/inning_all.xml"
   end
+
+  test "can list games" do
+    {:ok, game_ids} = Game.list("2015", "06", "09")
+    assert game_ids == [
+      "gid_2015_06_09_anamlb_tbamlb_1",
+      "gid_2015_06_09_arimlb_lanmlb_1",
+      "gid_2015_06_09_bosmlb_balmlb_1",
+      "gid_2015_06_09_chnmlb_detmlb_1",
+      "gid_2015_06_09_houmlb_chamlb_1",
+      "gid_2015_06_09_kcamlb_minmlb_1",
+      "gid_2015_06_09_miamlb_tormlb_1",
+      "gid_2015_06_09_milmlb_pitmlb_1",
+      "gid_2015_06_09_phimlb_cinmlb_1",
+      "gid_2015_06_09_sdnmlb_atlmlb_1",
+      "gid_2015_06_09_seamlb_clemlb_1",
+      "gid_2015_06_09_sfnmlb_nynmlb_1",
+      "gid_2015_06_09_slnmlb_colmlb_1",
+      "gid_2015_06_09_texmlb_oakmlb_1",
+      "gid_2015_06_09_wasmlb_nyamlb_1"
+    ]
+  end
 end
