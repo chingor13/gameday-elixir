@@ -26,9 +26,11 @@ defmodule Gameday.Game do
 
     innings = node
       |> Gameday.XmlNode.all('/game/inning')
+      |> Enum.map &Gameday.Inning.from_node/1
 
     pitches = node
       |> Gameday.XmlNode.all('/game/inning//atbat/pitch')
+      |> Enum.map &Gameday.Pitch.from_node/1
 
     %Gameday.Game{innings: innings, pitches: pitches}
   end
