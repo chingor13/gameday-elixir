@@ -21,11 +21,14 @@ defmodule Gameday.Game do
   def handle_response({:error, %HTTPoison.Error{reason: reason}}), do: { :error, reason }
 
   def parse_game(body) do
-    {xml, _rest} = body
-                    |> :binary.bin_to_list
-                    |> :xmerl_scan.string
-    innings = :xmerl_xpath.string('/game/inning', xml)
-    pitches = :xmerl_xpath.string('/game/inning//atbat/pitch', xml)
+    node = body
+      |> Gameday.XmlNode.from_string
+
+    innings = node
+      |> Gameday.XmlNode.all('/game/inning')
+
+    pitches = node
+      |> Gameday.XmlNode.all('/game/inning//atbat/pitch')
 
     %Gameday.Game{innings: innings, pitches: pitches}
   end
