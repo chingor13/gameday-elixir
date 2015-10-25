@@ -21,8 +21,9 @@ defmodule Gameday.Game do
   def handle_response({:error, %HTTPoison.Error{reason: reason}}), do: { :error, reason }
 
   def parse_game(body) do
-    chars = to_char_list(body)
-    {xml, _rest} = :xmerl_scan.string(chars)
+    {xml, _rest} = body
+                    |> :binary.bin_to_list
+                    |> :xmerl_scan.string
     innings = :xmerl_xpath.string('/game/inning', xml)
     pitches = :xmerl_xpath.string('/game/inning//atbat/pitch', xml)
 
