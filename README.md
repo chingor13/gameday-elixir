@@ -1,4 +1,4 @@
 Gameday
 =======
 
-** TODO: Add description **
+Parse MLB's Gameday data into a digestable struct of data
