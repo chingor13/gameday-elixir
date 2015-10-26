@@ -3,6 +3,7 @@ defmodule Gameday.Game do
 
   @user_agent [ { "User-agent", "Elixir"} ]
   @gameday_url Application.get_env(:gameday, :gameday_url)
+  @game_id_pattern ~r/gid_(\d{4})_(\d{2})_(\d{2})_.*/
 
   @doc """
   Given a year, month, and day, return a list of game ids (gid) played on
@@ -29,7 +30,7 @@ defmodule Gameday.Game do
   end
 
   def parse_game_id(gid) do
-    [_, year, month, day] = Regex.run(~r/gid_(\d{4})_(\d{2})_(\d{2})_.*/, gid)
+    [_, year, month, day] = Regex.run(@game_id_pattern, gid)
     [year, month, day]
   end
 
@@ -65,7 +66,9 @@ defmodule Gameday.Game do
   def parse_list(body) do
     body
       |> Floki.find("li a")
-      |> Floki.attribute("href")
+      |> Enum.map(fn(node) -> Floki.text(node) end)
+      |> Enum.filter(fn(url) -> Regex.match?(@game_id_pattern, url) end)
+      |> Enum.map(fn(node) -> node |> String.strip |> String.rstrip(?/) end)
   end
 
 end
